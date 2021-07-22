@@ -18,10 +18,21 @@ jobs:
       - name: Expose GIT Commit Data
         uses: rlespinasse/git-commit-data-action@v1.x
 
+      - id: version
+        run: |
+          echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release //')"
+
+      - id: tag
+        run: |
+          echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release /v/')"
+
+      - name: Show Matches
+        run: echo "${{ steps.version.output }} / ${{ steps.tag.output }}"
+
     outputs:
       is_release: ${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release') }}
-      version: echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release //')"
-      tag: echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release /v/')"
+      version: ${{ steps.version.output }}
+      tag: ${{ steps.tag.output }}
       commit_message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
 
   build:

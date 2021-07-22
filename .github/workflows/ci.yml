@@ -20,11 +20,11 @@ jobs:
 
       - id: version
         run: |
-          echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release //')"
+          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release //')"
 
       - id: tag
         run: |
-          echo "$(echo ${{ needs.tests.outputs.commit_message }} | sed -r 's/Release /v/')"
+          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
 
       - name: Show Matches
         run: echo "${{ steps.version.output }} / ${{ steps.tag.output }}"

@@ -1,8 +1,6 @@
 #!/bin/sh
-pyinstaller src/main.py \
+pyinstaller ./scale.py \
   --onefile \
-  --distpath="./dist" \
-  --workpath="./build" \
   --clean \
   --log-level="INFO" \
   --name="scale" \

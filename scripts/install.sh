@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Check the requirements for the installation
 # Installation needs root privileges
 if [ $UID -ne 0 ]; then

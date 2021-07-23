@@ -1,6 +1,6 @@
 from os import system as run_shell_cmd
 
-from logger import create_logger
+from src.logger import create_logger
 
 '''
 Check for the required binaries and install the associated packages if they are not found.

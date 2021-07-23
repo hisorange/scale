@@ -1,7 +1,7 @@
 import logging
 
 
-def create_logger(name, level=logging.DEBUG, handler=None):
+def create_logger(name, level=logging.DEBUG, handler=None) -> logging.Logger:
     """
     Create a logger with the given name.
     """

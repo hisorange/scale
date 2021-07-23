@@ -7,6 +7,28 @@ on:
     branches: ["main"]
 
 jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.6"
+          architecture: "x64"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run PyTest
+        run: |
+          sh ./scripts/test.sh
+
   check:
     name: Check Commit
     runs-on: ubuntu-latest
@@ -35,7 +57,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-18.04
-    needs: [check]
+    needs: [check, test]
     if: ${{ success() && needs.check.outputs.is_release == 'true' }}
 
     steps:

@@ -72,7 +72,7 @@ jobs:
       - name: Create the One Line Installer
         run: |
           cat ./install.sh.t | sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh
-          md5sum ./dist/scale | awk '{ print $1 }' > ./dist/checksum.md5
+          md5sum ./dist/scale' > ./dist/checksum.md5
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v1
@@ -82,6 +82,10 @@ jobs:
 
       - name: Sign with GPG
         run: gpg --sign --detach-sign --armor ./dist/scale
+
+      - name: Attach Public Key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" > ./dist/scale.gpg.key
 
       - name: Create GitHub Release
         id: release

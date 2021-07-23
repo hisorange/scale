@@ -1,5 +1,4 @@
 import json
-import signal
 
 from config import Config
 from hostinfo import HostInfo
@@ -23,20 +22,8 @@ def main():
 
     logger.info('Host information {}'.format(host_info_json))
 
-
     vpn.start()
 
-    logger.info('VPN is started')
-
-
-    def handle_shutdown(signum, frame):
-        logger = create_logger('Scale')
-        logger.info('Received signal {}'.format(signum))
-        logger.info('Shutting down...')
-        exit(0)
-
-
-    signal.signal(signal.SIGINT, handle_shutdown)
 
 
 main()

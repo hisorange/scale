@@ -54,15 +54,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Package Application
-        if: ${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release') }}
         uses: JackMcKew/pyinstaller-action-linux@main
         with:
           path: src
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: name-of-artifact
-          path: src/dist/linux
 
       - name: Create GitHub Release
         id: release

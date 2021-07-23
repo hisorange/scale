@@ -67,7 +67,7 @@ jobs:
           tag_name: ${{ needs.check.outputs.tag }}
           draft: false
           prerelease: false
-          files: src/dist/linux/*
+          files: src/dist/linux/scale
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:

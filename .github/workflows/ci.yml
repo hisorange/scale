@@ -59,7 +59,7 @@ jobs:
 
       - name: Change the Version DEB
         run: |
-          sed -i "s/VERSION_TAG/${{ needs.check.outputs.version }}/" debian/control
+          sed -i "s/VERSION_PH/${{ needs.check.outputs.version }}/" debian/control
 
       - name: Build Debian Package
         run: |

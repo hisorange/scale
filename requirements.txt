@@ -3,4 +3,4 @@ pytest
 pytest-mock
 coverage
 pytest-cov
-coveralls
+python-coveralls

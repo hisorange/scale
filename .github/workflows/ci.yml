@@ -29,12 +29,11 @@ jobs:
         run: |
           sh ./scripts/test.sh
 
-      - name: Export Coverage
-        if: ${{ success() }}
-        run: coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path--to-lcov: coverage.xml
 
   check:
     name: Check Commit

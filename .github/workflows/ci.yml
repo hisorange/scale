@@ -15,17 +15,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create Release Tag
-        id: create_tag
-        uses: jaywcjlove/create-tag-action@main
+      - name: Expose GIT Commit Data
+        uses: rlespinasse/git-commit-data-action@v1.x
+
+      - id: version
+        run: |
+          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release //')"
+
+      - id: tag
+        run: |
+          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
+
+      - run: echo "${{ steps.version.output }}"
+      - run: echo ${{ steps.tag.output }}"
+
+      - name: Create Tag
+        uses: negz/create-tag@v1
         with:
+          version: ${{ steps.version.output }}
+          message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          test: '[R|r]elease[d]\s+[v|V]?\d(\.\d+){0,2}'
 
     outputs:
-      is_release: ${{ steps.create_tag.successful }}
-      version: ${{ steps.create_tag.versionNumber }}
-      tag: ${{ steps.create_tag.version }}
+      is_release: ${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release') }}
+      version: ${{ steps.version.output }}
+      tag: ${{ steps.tag.output }}
+      commit_message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
 
   build:
     name: Build
@@ -38,6 +53,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Package Application
+        if: ${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release') }}
         uses: JackMcKew/pyinstaller-action-linux@main
         with:
           path: src

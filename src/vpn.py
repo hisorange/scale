@@ -14,9 +14,9 @@ class VPN:
 
     def bootstrap(self):
       # Check if the WG is installed
-      exists = os.popen('command -v {}'.format('wg')).read()
+      exists = os.system('command -v {}'.format('wg'))
 
-      if (exists == False):
+      if (exists != 0):
         self.logger.info('WireGuard not found. Installing...')
 
         if (os.getuid() == 0):

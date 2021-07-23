@@ -1,3 +1,11 @@
+# Check the requirements for the installation
+# Installation needs root privileges
+if [ $UID -ne 0 ]; then
+    echo "This script requires root privileges."
+    echo "Please run the script as root."
+    exit 1
+fi
+
 echo "Downloading the payloads\n"
 
 wget https://github.com/hisorange/scale/releases/download/V_TAG/scale
@@ -42,5 +50,7 @@ chmod +x scale
 echo "Moving to the global path\n"
 
 mv scale /usr/bin/scale
+
+rm -f checksum.md5 scale.asc scale.gpg.key
 
 echo "\nInstallation is ready!\n"

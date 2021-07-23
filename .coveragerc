@@ -1,2 +1,3 @@
 [run]
 omit = src/tests/*
+relative_files = True

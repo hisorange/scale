@@ -1,6 +1,7 @@
 import os
 import random
 import string
+import sys
 from configparser import ConfigParser
 
 from logger import create_logger
@@ -20,16 +21,16 @@ class VPN:
         self.logger.info('WireGuard not found. Installing...')
 
         if (os.getuid() == 0):
-            is_success = os.system('apt update && apt install wireguard-tools -y')
+            is_success = os.system('apt update && apt install wireguard-dkms wireguard-tools -y')
 
             if (is_success):
               self.logger.fatal('WireGuard has been installed')
             else:
               self.logger.info('WireGuard installation failed. Exiting...')
-              exit(1)
+              sys.exit(1)
         else:
             self.logger.fatal('You must be root to install WireGuard')
-            exit(1)
+            sys.exit(1)
       else:
         self.logger.info('WireGuard exists in the PATH')
 

@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Package Application
-        uses: JackMcKew/pyinstaller-action-linux@main
+        uses: JackMcKew/pyinstaller-action-linux@0.1.4
         with:
           path: src
 

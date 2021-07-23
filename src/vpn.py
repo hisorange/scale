@@ -1,7 +1,6 @@
 import os
 import random
 import string
-import sys
 from configparser import ConfigParser
 
 from logger import create_logger
@@ -14,26 +13,6 @@ class VPN:
       pass
 
     def bootstrap(self):
-      # Check if the WG is installed
-      exists = os.system('command -v {}'.format('wg'))
-
-      if (exists != 0):
-        self.logger.info('WireGuard not found. Installing...')
-
-        if (os.getuid() == 0):
-            is_success = os.system('apt update && apt install wireguard-dkms wireguard-tools -y')
-
-            if (is_success):
-              self.logger.fatal('WireGuard has been installed')
-            else:
-              self.logger.info('WireGuard installation failed. Exiting...')
-              sys.exit(1)
-        else:
-            self.logger.fatal('You must be root to install WireGuard')
-            sys.exit(1)
-      else:
-        self.logger.info('WireGuard exists in the PATH')
-
       # Check if the VPN is running
       if (len(self.config.network['passKey']) == 0):
         self.logger.info('No passkey found. Preparing one')

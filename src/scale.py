@@ -1,6 +1,7 @@
 import json
 
 from config import Config
+from dependencymanager import DependencyManager
 from hostinfo import HostInfo
 from logger import create_logger
 from vpn import VPN
@@ -11,6 +12,8 @@ def main():
 
     config = Config()
     config.load()
+
+    DependencyManager().prepare_necessities()
 
     vpn = VPN(config)
     vpn.bootstrap()

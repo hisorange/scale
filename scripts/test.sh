@@ -1,2 +1,2 @@
 #!/bin/sh
-pytest ./src/tests/test_deps.py --cov-config=.coveragerc --cov=./src/ --no-cov-on-fail
+pytest ./src/tests/test_dependencymanager.py --cov=src/scale --cov-config=.coveragerc --no-cov-on-fail

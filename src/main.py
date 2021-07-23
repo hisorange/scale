@@ -1,0 +1,12 @@
+import asyncio
+
+from scale.scale import start_scale
+
+
+async def main(loop: asyncio.AbstractEventLoop):
+    await start_scale(loop)
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main(loop))
+    loop.run_forever()

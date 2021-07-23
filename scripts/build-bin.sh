@@ -1,5 +1,5 @@
 #!/bin/sh
-pyinstaller ./src/scale.py \
+pyinstaller ./src/main.py \
   --distpath ./dist \
   --workpath ./build \
   --onefile \

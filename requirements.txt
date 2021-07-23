@@ -4,3 +4,6 @@ pytest-mock
 coverage
 pytest-cov
 python-coveralls
+asyncio
+aio-udp-server
+pycryptodome

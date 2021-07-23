@@ -1,11 +1,19 @@
 {
   "cSpell.ignoreWords": [
+    "aioudp",
+    "asyncio",
+    "crypter",
+    "crypto",
     "dkms",
     "iface",
     "ifaddresses",
     "netifaces",
+    "nkey",
     "optionxform",
+    "recvfrom",
     "signum",
+    "udpserver",
+    "unpad",
     "wg",
     "wgscale"
   ]

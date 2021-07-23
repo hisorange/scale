@@ -1,7 +1,6 @@
-
 from logging import Logger
 
-from src.dependencymanager import DependencyManager
+from scale.dependencymanager import DependencyManager
 
 
 # should create the logger

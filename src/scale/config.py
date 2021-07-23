@@ -1,7 +1,7 @@
 import json
 import os
 
-from logger import create_logger
+from scale.logger import create_logger
 
 
 class Config:
@@ -41,7 +41,10 @@ class Config:
           "discoveryPort": 56124
         },
         "entryPoints": [
-          "192.168.0.1:56124"
+          "192.168.56.101",
+          "192.168.56.102",
+          "192.168.56.103",
+          "192.168.56.104",
         ]
       }, f, indent=2)
 

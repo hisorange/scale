@@ -3,7 +3,7 @@ import random
 import string
 from configparser import ConfigParser
 
-from logger import create_logger
+from scale.logger import create_logger
 
 
 class VPN:
@@ -85,7 +85,7 @@ class VPN:
         self.logger.fatal('WireGuard failed to stop')
 
 
-    def __del__(self):
-      self.logger.info('Closing VPN')
-      self.stop()
-      pass
+    # def __del__(self):
+    #   self.logger.info('Closing VPN')
+    #   self.stop()
+    #   pass

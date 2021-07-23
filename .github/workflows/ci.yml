@@ -53,10 +53,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Package Application
-        uses: JackMcKew/pyinstaller-action-linux@0.1.4
+      - uses: actions/setup-python@v2
         with:
-          path: src
+          python-version: "3.9"
+          architecture: "x64"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Build
+        run: |
+          sh ./build.sh
 
       - name: Create GitHub Release
         id: release
@@ -66,7 +76,7 @@ jobs:
           tag_name: ${{ needs.check.outputs.tag }}
           draft: false
           prerelease: false
-          files: src/dist/linux
+          files: ./dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:

@@ -1,5 +1,11 @@
 # Scale
+
+[![Version](https://badge.fury.io/gh/hisorange%2Fscale.svg)](https://badge.fury.io/gh/hisorange%2Fscale)
+[![Build](https://github.com/hisorange/scale/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hisorange/scale/actions/workflows/ci.yml)
+[![GitHub license](https://img.shields.io/github/license/hisorange/scale)](https://github.com/hisorange/scale/blob/main/LICENSE)
+
 ---
+
 
 Just a simple security util for linux servers.
 

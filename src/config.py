@@ -25,6 +25,12 @@ class Config:
       self.__dict__.update(json.load(f))
 
   def create_config(self)-> None:
+    self.logger.info('Creating config')
+    directory = os.path.dirname(self.get_local_path())
+
+    if not os.path.exists(directory):
+      os.makedirs(directory)
+
     with open(self.get_local_path(), 'w') as f:
       json.dump({
         "network": {

@@ -70,7 +70,7 @@ jobs:
 
       - name: Create the One Line Installer
         run: |
-          echo "cat ./install.sh.t | sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh"
+          cat ./install.sh.t | sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh
           md5sum ./dist/scale | awk '{ print $1 }' > ./dist/checksum.md5
 
       - name: Import GPG Key
@@ -87,6 +87,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ needs.check.outputs.version }}
+          body: "```wget https://github.com/hisorange/scale/releases/download/${{ needs.check.outputs.tag }}/install.sh  -O - | sh```"
           tag_name: ${{ needs.check.outputs.tag }}
           draft: false
           prerelease: false

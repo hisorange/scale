@@ -67,11 +67,11 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          sh ./build.sh
+          sh ./scripts/build.sh
 
       - name: Create the One Line Installer
         run: |
-          sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' && cp ./install.sh.t ./dist/install.sh
+          cat ./scripts/install.sh | sed -r "s/V_TAG/${{ needs.check.outputs.tag }}/" > ./dist/install.sh
           md5sum ./dist/scale' > ./dist/checksum.md5
 
       - name: Import GPG Key

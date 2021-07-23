@@ -71,7 +71,7 @@ jobs:
 
       - name: Create the One Line Installer
         run: |
-          cat ./install.sh.t | sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh
+          sed -r install.sh.t 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh && echo "Escape hack"
           md5sum ./dist/scale' > ./dist/checksum.md5
 
       - name: Import GPG Key

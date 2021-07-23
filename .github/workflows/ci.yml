@@ -30,7 +30,7 @@ jobs:
       - run: echo "${{ steps.parse.outputs.tag }}"
 
       - name: Create Tag
-        if: ${{ steps.parse.outputs.is_release }}
+        if: ${{ steps.parse.outputs.is_release == 'true' }}
         uses: negz/create-tag@v1
         with:
           version: ${{ steps.parse.outputs.tag }}
@@ -81,7 +81,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}
-      url: ${{ steps.release.outputs.upload_url }}
+      url: ${{ steps.release.outputs.url }}
 
   notify:
     name: Notify

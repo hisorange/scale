@@ -53,9 +53,17 @@ jobs:
           pip install pyinstaller
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Build with PyInstaller
+      - name: Build Binary
         run: |
-          sh ./scripts/build.sh
+          sh ./scripts/build-bin.sh
+
+      - name: Change the Version DEB
+        run: |
+          sed -i "s/VERSION_TAG/${{ needs.check.outputs.version }}/"
+
+      - name: Build Debian Package
+        run: |
+          sh ./scripts/build-debian.sh
 
       - name: Create the One Line Installer and MD5 CheckSum
         run: |

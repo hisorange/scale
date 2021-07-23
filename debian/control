@@ -1,0 +1,9 @@
+Package: scale
+Version: VERSION_PH
+Section: development
+Priority: optional
+Architecture: all
+Depends: python3 (>= 3.0)
+Maintainer: hello@hisorange.me
+Description: Hobby security
+ Hmm, lets see if this works :3

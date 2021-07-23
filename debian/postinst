@@ -1,0 +1,5 @@
+#!/bin/sh
+
+chmod +x /usr/bin/scale
+echo "This is called on post install!\n"
+exit 0

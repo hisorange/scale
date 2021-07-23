@@ -63,7 +63,7 @@ jobs:
 
       - name: Build Debian Package
         run: |
-          sh ./scripts/build-debian.sh
+          sh ./scripts/build-deb.sh
 
       - name: Create the One Line Installer and MD5 CheckSum
         run: |

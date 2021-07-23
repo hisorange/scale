@@ -14,7 +14,7 @@ fi
 
 echo "Verifying the checksum\n"
 
-md5sum -c checksum.md5 scale
+md5sum -c checksum.md5
 
 if [ $? -eq 0 ]; then
     echo "Checksum is correct\n"
@@ -25,7 +25,7 @@ fi
 
 echo "Verifying the GPG signature\n"
 
-gpg --import scale.gpg.key
+gpg --import --batch scale.gpg.key
 gpg --verify scale.asc scale
 
 if [ $? -eq 0 ]; then

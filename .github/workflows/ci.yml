@@ -25,18 +25,6 @@ jobs:
           echo "::set-output name=version::$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release //')"
           echo "::set-output name=tag::$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
 
-      - run: echo "${{ steps.parse.outputs.is_release }}"
-      - run: echo "${{ steps.parse.outputs.version }}"
-      - run: echo "${{ steps.parse.outputs.tag }}"
-
-      - name: Create Tag
-        if: ${{ steps.parse.outputs.is_release == 'true' }}
-        uses: negz/create-tag@v1
-        with:
-          version: ${{ steps.parse.outputs.tag }}
-          message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
     outputs:
       is_release: ${{ steps.parse.outputs.is_release }}
       version: ${{ steps.parse.outputs.version }}
@@ -69,7 +57,7 @@ jobs:
         run: |
           sh ./scripts/build.sh
 
-      - name: Create the One Line Installer
+      - name: Create the One Line Installer and MD5 CheckSum
         run: |
           cat ./scripts/install.sh | sed -r "s/V_TAG/${{ needs.check.outputs.tag }}/" > ./dist/install.sh
           md5sum ./dist/scale > ./dist/checksum.md5
@@ -86,6 +74,13 @@ jobs:
       - name: Attach Public Key
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" > ./dist/scale.gpg.key
+
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ needs.check.outputs.tag }}
+          message: ${{ needs.check.outputs.commit_message }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         id: release

@@ -7,4 +7,3 @@ gpg --import scale.gpg.key && \
 gpg --verify scale.asc scale && \
 chmod +x scale && \
 mv scale /usr/bin/scale
-

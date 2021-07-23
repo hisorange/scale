@@ -1,3 +1,6 @@
 netifaces==0.10.4
 pytest
 pytest-mock
+coverage
+pytest-cov
+coveralls

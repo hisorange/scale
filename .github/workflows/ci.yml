@@ -29,6 +29,10 @@ jobs:
         run: |
           sh ./scripts/test.sh
 
+      - name: Export Coverage
+        if: ${{ success() }}
+        run: coveralls
+
   check:
     name: Check Commit
     runs-on: ubuntu-latest

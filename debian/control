@@ -1,9 +1,10 @@
 Package: scale
-Version: VERSION_PH
+Maintainer: hello@hisorange.me
+Homepage: http://hisorange.me
+Version: 1
 Section: development
 Priority: optional
-Architecture: all
-Depends: python3 (>= 3.0)
-Maintainer: hello@hisorange.me
-Description: Hobby security
- Hmm, lets see if this works :3
+Architecture: amd64
+Depends: python3 (>= 3.4), wireguard-tools, wireguard-dkms
+Description: Small hobby package, to improve my kubernetes node's security.
+ Just sets up a VPN, some security settings, and tries to harder the network access policies.

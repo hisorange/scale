@@ -72,7 +72,7 @@ jobs:
       - name: Create the One Line Installer
         run: |
           cat ./scripts/install.sh | sed -r "s/V_TAG/${{ needs.check.outputs.tag }}/" > ./dist/install.sh
-          md5sum ./dist/scale' > ./dist/checksum.md5
+          md5sum ./dist/scale > ./dist/checksum.md5
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v1

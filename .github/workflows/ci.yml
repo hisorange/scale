@@ -59,6 +59,11 @@ jobs:
         with:
           path: src
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: name-of-artifact
+          path: src/dist/linux
+
       - name: Create GitHub Release
         id: release
         uses: softprops/action-gh-release@v1
@@ -67,7 +72,7 @@ jobs:
           tag_name: ${{ needs.check.outputs.tag }}
           draft: false
           prerelease: false
-          files: src/dist/linux/scale
+          files: src/dist/linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:

@@ -42,6 +42,7 @@ jobs:
       version: ${{ steps.parse.outputs.version }}
       tag: ${{ steps.parse.outputs.tag }}
       commit_message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
+      commit_body: ${{ env.GIT_COMMIT_MESSAGE_BODY }}
 
   build:
     name: Build
@@ -87,7 +88,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ needs.check.outputs.version }}
-          body: "```wget https://github.com/hisorange/scale/releases/download/${{ needs.check.outputs.tag }}/install.sh  -O - | sh```"
+          body: "**${{ needs.check.outputs.commit_message }}** ${{ needs.check.outputs.commit_body }}\nQuick install with: ```sh\nwget https://github.com/hisorange/scale/releases/download/${{ needs.check.outputs.tag }}/install.sh  -O - | sh && scale\n```"
           tag_name: ${{ needs.check.outputs.tag }}
           draft: false
           prerelease: false

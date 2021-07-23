@@ -68,6 +68,11 @@ jobs:
         run: |
           sh ./build.sh
 
+      - name: Create the One Line Installer
+        run: |
+          echo "cat ./install.sh.t | sed -r 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./src/dist/install.sh"
+          md5sum ./src/dist/scale | awk '{ print $1 }' > ./src/dist/checksum.md5
+
       - name: Create GitHub Release
         id: release
         uses: softprops/action-gh-release@v1

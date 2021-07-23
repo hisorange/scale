@@ -18,28 +18,29 @@ jobs:
       - name: Expose GIT Commit Data
         uses: rlespinasse/git-commit-data-action@v1.x
 
-      - id: version
+      - name: Parse
+        id: parse
         run: |
-          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release //')"
+          echo "::set-output name=is_release::${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release ') }}"
+          echo "::set-output name=version::$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release //')"
+          echo "::set-output name=tag::$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
 
-      - id: tag
-        run: |
-          echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
-
-      - run: echo "${{ steps.version.output }}"
-      - run: echo "${{ steps.tag.output }}"
+      - run: echo "${{ steps.parse.outputs.is_release }}"
+      - run: echo "${{ steps.parse.outputs.version }}"
+      - run: echo "${{ steps.parse.outputs.tag }}"
 
       - name: Create Tag
+        if: ${{ steps.parse.outputs.is_release }}
         uses: negz/create-tag@v1
         with:
-          version: ${{ steps.version.output }}
+          version: ${{ steps.parse.outputs.tag }}
           message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
     outputs:
-      is_release: ${{ startsWith(env.GIT_COMMIT_MESSAGE_SUBJECT, 'Release') }}
-      version: ${{ steps.version.output }}
-      tag: ${{ steps.tag.output }}
+      is_release: ${{ steps.parse.outputs.is_release }}
+      version: ${{ steps.parse.outputs.version }}
+      tag: ${{ steps.parse.outputs.tag }}
       commit_message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}
 
   build:

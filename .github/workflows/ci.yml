@@ -71,7 +71,7 @@ jobs:
 
       - name: Create the One Line Installer
         run: |
-          sed -r install.sh.t 's/V_TAG/${{ needs.check.outputs.tag }}/' > ./dist/install.sh && echo "Escape hack"
+          sed 's/V_TAG/${{ needs.check.outputs.tag }}/' install.sh.t > ./dist/install.sh && echo "Escape hack"
           md5sum ./dist/scale' > ./dist/checksum.md5
 
       - name: Import GPG Key
@@ -116,4 +116,4 @@ jobs:
           SLACK_USERNAME: GitHub Release Notification
           SLACK_AVATAR: sender
         with:
-          args: "[${{ github.repository }}] Published the release [${{ needs.check.version }}] available\n${{ needs.build.url }}\n${{ needs.build.upload_url }}"
+          args: "[${{ github.repository }}] Published the release [${{ needs.check.outputs.version }}] available\n${{ needs.build.outputs.url }}\n${{ needs.build.outputs.upload_url }}"

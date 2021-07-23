@@ -44,5 +44,3 @@ echo "Moving to the global path\n"
 mv scale /usr/bin/scale
 
 echo "\nInstallation is ready!\n"
-
-scale

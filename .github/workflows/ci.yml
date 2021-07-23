@@ -27,7 +27,7 @@ jobs:
           echo "$(echo ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }} | sed -r 's/Release /v/')"
 
       - run: echo "${{ steps.version.output }}"
-      - run: echo ${{ steps.tag.output }}"
+      - run: echo "${{ steps.tag.output }}"
 
       - name: Create Tag
         uses: negz/create-tag@v1

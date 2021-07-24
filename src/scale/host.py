@@ -6,8 +6,7 @@ from scale.network.interface import Interface
 
 
 class Host:
-    def __init__(self, config):
-        self.config = config
+    def __init__(self):
         self.hostname = gethostname()
 
     def gather_interfaces(self) -> list:

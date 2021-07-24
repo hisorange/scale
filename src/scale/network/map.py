@@ -1,4 +1,4 @@
-from scale.hostinfo import Host
+from scale.host import Host
 from scale.network.node import Node
 
 

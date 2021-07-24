@@ -15,7 +15,7 @@ class Node:
         self.is_local = False
 
     def add_interface(self, interface: Interface) -> None:
-        if interface.ip != "127.0.0.1" and interface.mac != "00:00:00:00:00:00":
+        if interface.ip != "127.0.0.1" and interface.name != "lo":
             self.interfaces.append(interface)
 
     def set_public_key(self, publicKey: str) -> None:

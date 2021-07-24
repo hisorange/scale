@@ -12,9 +12,6 @@ class DependencyManager:
         self.logger = create_logger(self.__class__.__name__)
         self.aptUpdated = False
 
-    # Check for missing packages and install them
-
-    def prepare_necessities(self) -> None:
         self.logger.info('Verifying the required binaries')
         dependencies: dict = {
             "wg": ["wireguard-tools", "wireguard-dkms"],

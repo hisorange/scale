@@ -4,12 +4,14 @@ import string
 from configparser import ConfigParser
 
 from scale.logger import create_logger
+from scale.network.node import Node
 
 
-class VPN:
+class VPNManager:
     def __init__(self, config):
         self.logger = create_logger('VPN')
         self.config = config
+        self.nodes: list[Node] = []
         pass
 
     def bootstrap(self):
@@ -49,6 +51,15 @@ class VPN:
                 iconfig.set('Interface', 'ListenPort ', str(
                     self.config.network['discoveryPort'] - 1))
 
+                for node in self.nodes:
+                    iconfig.add_section('Interface')
+                    iconfig.set('Interface', 'PublicKey', node.public_key)
+
+                    # TODO: Add support for multiple interfaces~
+                    for iface in node.interfaces:
+                        if iface.name == self.config.network['interface']:
+                            iconfig.set('Interface', 'Address', iface.ip)
+
                 iconfig.write(f)
 
         pass
@@ -71,7 +82,8 @@ class VPN:
 
         pass
 
-    def start(self):
+    def connect(self):
+        self.generate_wg_config()
         exit_code = os.system(
             'wg-quick up {}'.format(self.config.network['interface']))
 

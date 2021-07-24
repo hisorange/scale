@@ -4,7 +4,7 @@ from scale.config import Config
 from scale.dependencymanager import DependencyManager
 from scale.discovery import Discovery
 from scale.network.map import Map
-from scale.vpn import VPN
+from scale.vpn import VPNManager
 
 
 async def start_scale(loop: asyncio.AbstractEventLoop):
@@ -13,12 +13,11 @@ async def start_scale(loop: asyncio.AbstractEventLoop):
 
     DependencyManager()
 
-    vpn = VPN(config)
+    vpn = VPNManager(config)
     vpn.bootstrap()
-    vpn.start()
 
     # Create the network map
-    network = Map(config)
+    network = Map(config, vpn)
     network.create_host()
 
     # Start the discovery service

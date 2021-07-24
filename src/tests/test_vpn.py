@@ -1,8 +1,8 @@
 from logging import Logger
 
-from scale.vpn import VPN
+from scale.vpn import VPNManager
 
 
 # should create the logger
 def test_should_create_logger():
-    assert isinstance(VPN({}).logger, Logger)
+    assert isinstance(VPNManager({}).logger, Logger)

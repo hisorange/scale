@@ -13,6 +13,7 @@
     "nkey",
     "optionxform",
     "packb",
+    "protobuf",
     "recvfrom",
     "signum",
     "udpserver",

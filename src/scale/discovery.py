@@ -8,6 +8,7 @@ from scale.network.message import Message
 from scale.udpserver import DiscoveryUDPServer
 
 
+# TODO: use protobuf to serialize the message
 class Discovery:
     def __init__(self, config, loop: asyncio.AbstractEventLoop, network: Map):
         self.config = config

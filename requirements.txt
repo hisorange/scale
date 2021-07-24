@@ -8,3 +8,4 @@ asyncio
 aio-udp-server
 pycryptodome
 msgpack
+coloredlogs

@@ -15,7 +15,8 @@ class Host:
         for name in netifaces.interfaces():
             try:
                 ip = netifaces.ifaddresses(name)[netifaces.AF_INET][0]['addr']
-                netmask = netifaces.ifaddresses(name)[netifaces.AF_INET][0]['netmask']
+                netmask = netifaces.ifaddresses(
+                    name)[netifaces.AF_INET][0]['netmask']
                 gate = netifaces.gateways()['default'][netifaces.AF_INET]
 
                 if gate[1] == name:
@@ -23,10 +24,12 @@ class Host:
                 else:
                     gateway = None
 
-                broadcast = netifaces.ifaddresses(name)[netifaces.AF_INET][0]['broadcast']
+                broadcast = netifaces.ifaddresses(
+                    name)[netifaces.AF_INET][0]['broadcast']
 
                 # Initialize into a local data structure
-                interface = Interface(name=name, ip=ip, netmask=netmask, gateway=gateway, broadcast=broadcast)
+                interface = Interface(
+                    name=name, ip=ip, netmask=netmask, gateway=gateway, broadcast=broadcast)
 
                 # Push to the list of interfaces
                 interfaces.append(interface)
@@ -34,4 +37,3 @@ class Host:
                 pass
 
         return interfaces
-

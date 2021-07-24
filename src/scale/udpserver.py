@@ -24,8 +24,8 @@ class DiscoveryUDPServer:
         self.nkey = crypter.encrypt('hello')
         self.logger.info('Key is [{}]'.format(self.nkey))
 
-
     # Handle messages
+
     async def handle_incoming(self, data, addr):
         self.logger.info(f'Received from [{data}]: {addr}')
 

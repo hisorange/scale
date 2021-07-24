@@ -1,13 +1,12 @@
 import asyncio
 
-from src.scale.network.node import Node
-
 from scale.config import Config
 from scale.dependencymanager import DependencyManager
 from scale.discovery import Discovery
 from scale.hostinfo import Host
 from scale.logger import create_logger
 from scale.network.map import Map
+from scale.network.node import Node
 from scale.vpn import VPN
 
 

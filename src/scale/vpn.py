@@ -12,6 +12,7 @@ class VPNManager:
         self.logger = create_logger('VPN')
         self.config = config
         self.nodes: list[Node] = []
+        self.iface = self.config.network['interface']
         pass
 
     def bootstrap(self):
@@ -29,38 +30,41 @@ class VPNManager:
 
         self.logger.info('Bootstrapped VPN...')
 
+    def check_if_wg_running(self):
+        result = os.system('ip a | grep {}'.format(
+            self.iface))
+
+        if (result == 0):
+            return True
+        else:
+            return False
+
     def generate_wg_config(self) -> None:
         config_path = os.path.join(
-            '/etc/wireguard', '{}.conf'.format(self.config.network['interface']))
+            '/etc/wireguard', '{}.conf'.format(self.iface))
 
-        self.logger.info(
-            'Check for existing WG config [{}]'.format(config_path))
+        self.logger.info('Generating WG config [{}]'.format(config_path))
 
-        if (os.path.isfile(config_path)):
-            self.logger.info('WG config already exists. Skipping...')
-        else:
-            self.logger.info('Generating WG config [{}]'.format(config_path))
+        with open(config_path, 'w') as f:
+            iconfig = ConfigParser()
+            iconfig.optionxform = str
+            iconfig.add_section('Interface')
+            iconfig.set('Interface', 'PrivateKey',
+                        self.config.network['privateKey'])
+            iconfig.set('Interface', 'Address ', '10.0.1.1/24')
+            iconfig.set('Interface', 'ListenPort ', str(
+                self.config.network['discoveryPort'] - 1))
 
-            with open(config_path, 'w') as f:
-                iconfig = ConfigParser()
-                iconfig.optionxform = str
+            for node in self.nodes:
                 iconfig.add_section('Interface')
-                iconfig.set('Interface', 'PrivateKey',
-                            self.config.network['privateKey'])
-                iconfig.set('Interface', 'Address ', '10.0.1.1/24')
-                iconfig.set('Interface', 'ListenPort ', str(
-                    self.config.network['discoveryPort'] - 1))
+                iconfig.set('Interface', 'PublicKey', node.public_key)
 
-                for node in self.nodes:
-                    iconfig.add_section('Interface')
-                    iconfig.set('Interface', 'PublicKey', node.public_key)
+                # TODO: Add support for multiple interfaces~
+                for iface in node.interfaces:
+                    if iface.name == self.iface:
+                        iconfig.set('Interface', 'Address', iface.ip)
 
-                    # TODO: Add support for multiple interfaces~
-                    for iface in node.interfaces:
-                        if iface.name == self.config.network['interface']:
-                            iconfig.set('Interface', 'Address', iface.ip)
-
-                iconfig.write(f)
+            iconfig.write(f)
 
         pass
 
@@ -83,9 +87,13 @@ class VPNManager:
         pass
 
     def connect(self):
+        # Restart with the new config
+        if self.check_if_wg_running():
+            self.stop()
+
         self.generate_wg_config()
-        exit_code = os.system(
-            'wg-quick up {}'.format(self.config.network['interface']))
+
+        exit_code = os.system('wg-quick up {}'.format(self.iface))
 
         if (exit_code == 0):
             self.logger.info('WireGuard started')
@@ -94,14 +102,9 @@ class VPNManager:
 
     def stop(self):
         exit_code = os.system(
-            'wg-quick down {}'.format(self.config.network['interface']))
+            'wg-quick down {}'.format(self.iface))
 
         if (exit_code == 0):
             self.logger.info('WireGuard stopped')
         else:
             self.logger.fatal('WireGuard failed to stop')
-
-    # def __del__(self):
-    #   self.logger.info('Closing VPN')
-    #   self.stop()
-    #   pass

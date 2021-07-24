@@ -27,15 +27,15 @@ class DiscoveryUDPServer:
 
     # Handle messages
     async def on_datagram_received(self, data, addr):
-        self.logger.info('Received from [{}]: {}'.format(addr, data))
+        self.logger.info(f'Received from [{data}]: {addr}')
 
         data_str = str(data).replace('\n', '')
 
         # Check for valid key
         if data_str != self.nkey:
-            self.logger.warning('Invalid key: [{}]'.format(data_str))
+            self.logger.warning(f'Invalid key: [{data_str}]')
         else:
-            self.logger.info('Valid key: [{}]'.format(data_str))
+            self.logger.info(f'Valid key: [{data_str}]')
 
     async def send_discovery_packet(self):
         while True:

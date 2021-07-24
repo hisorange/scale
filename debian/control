@@ -1,7 +1,7 @@
 Package: scale
 Maintainer: hello@hisorange.me
 Homepage: http://hisorange.me
-Version: 1
+Version: VERSION_PH
 Section: development
 Priority: optional
 Architecture: amd64

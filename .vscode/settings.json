@@ -12,9 +12,11 @@
     "netifaces",
     "nkey",
     "optionxform",
+    "packb",
     "recvfrom",
     "signum",
     "udpserver",
+    "unpackb",
     "unpad",
     "wg",
     "wgscale"

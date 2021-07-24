@@ -19,8 +19,8 @@ async def start_scale(loop: asyncio.AbstractEventLoop):
 
     # Create the network map
     network = Map(config)
-    network.create_host_node()
+    network.create_host()
 
     # Start the discovery service
-    discovery = Discovery(config, loop)
+    discovery = Discovery(config, loop, network=network)
     await discovery.run()

@@ -4,46 +4,57 @@ from aioudp.server import UDPServer
 
 from scale.aes import AESCipher
 from scale.logger import create_logger
+from scale.network.map import Map
+from scale.network.message import Message
+from scale.network.node import Node
 
 
 class DiscoveryUDPServer:
-    def __init__(self, server: UDPServer, loop, config):
+    def __init__(self, server: UDPServer, loop, config, network: Map):
         self.server = server
         self.loop = loop
         self.config = config
+        self.network = network
         self.logger = create_logger(self.__class__.__name__)
-        self.create_network_key()
+        self.cipher = AESCipher(self.config.network['passKey'])
 
         # Subscribe for incoming udp packet event
-        self.server.subscribe(self.handle_incoming)
-        asyncio.ensure_future(self.send_discovery_packets(), loop=self.loop)
-
-    def create_network_key(self):
-        self.logger.info('Network key is calculated')
-        crypter = AESCipher(self.config.network['passKey'])
-        self.nkey = crypter.encrypt('hello')
-        self.logger.info('Key is [{}]'.format(self.nkey))
+        self.server.subscribe(self.handle_incoming_message)
 
     # Handle messages
+    async def handle_incoming_message(self, data, addr):
+        self.logger.info(f'New message arrived from [{addr}]')
 
-    async def handle_incoming(self, data, addr):
-        self.logger.info(f'Received from [{data}]: {addr}')
+        # Decrypt message
+        data = (data)
 
-        data_str = str(data).replace('\n', '')
+        # Create message instance
+        try:
+            message: Message = Message.from_bytes(data)
 
-        # Check for valid key
-        if data_str != self.nkey:
-            self.logger.warning(f'Invalid key: [{data_str}]')
-        else:
-            self.logger.info(f'Valid key: [{data_str}]')
+            line = '-' * 80
 
-    async def send_discovery_packets(self):
-        while True:
-            for entry in self.config.entryPoints:
-                await self.send_packet(entry)
+            self.logger.debug(f'Message type: {message.type}')
+            self.logger.debug(
+                f'Message data:\n{line}\n{message.payload}\n{line}')
 
-    async def send_packet(self, ip):
-        self.logger.debug('Sending discovery packet to [{}]'.format(ip))
-        self.server.send(self.nkey, (ip, self.config.network['discoveryPort']))
+            if message.type == 'hello':
+                self.logger.info(f'New [hello] message from [{addr}]')
+                self.network.add_node(Node.from_dict(message.payload))
 
-        await asyncio.sleep(1)
+        except Exception as e:
+            self.logger.error(f'Failed to parse message: {e}')
+
+    async def send_packet(self, ip, message: Message):
+        self.logger.debug(
+            'Sending message [{}] to [{}]'.format(message.type, ip))
+
+        # Address the message
+        message.recipient = ip
+
+        # Encrypt message
+        payload = (message.to_bytes())
+
+        self.server.send(payload, (ip, self.config.network['discoveryPort']))
+        await asyncio.sleep(.1)
+        pass

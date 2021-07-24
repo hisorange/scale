@@ -17,7 +17,9 @@ class Map:
     def add_node(self, node: Node) -> None:
         if not node.hostname in self.nodes:
             self.nodes[node.hostname] = node
-            self.join()
+
+            if len(self.nodes) > 1:
+                self.join()
         else:
             self.logger.warn(f"Node already exists [{node.hostname}]")
 

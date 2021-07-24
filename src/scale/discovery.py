@@ -1,4 +1,5 @@
 import asyncio
+from socket import socket
 
 from aioudp import UDPServer
 
@@ -25,6 +26,8 @@ class Discovery:
         udp_srv = UDPServer()
         udp_srv.run("0.0.0.0", int(
             self.config.network['discoveryPort']), loop=self.loop)
+        # Allow to send to broadcast addresses
+        udp_srv._sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
         self.server = DiscoveryUDPServer(
             server=udp_srv, loop=self.loop, config=self.config, network=self.network)
@@ -45,13 +48,19 @@ class Discovery:
         host = self.network.get_host()
 
         for entrypoint in self.config.entryPoints:
-            if entrypoint:
+            if not self.is_known_node(entrypoint):
                 await self.server.send_packet(entrypoint, Message('hello', host))
+
+    def is_known_node(self, address: str):
+        for node in self.network.nodes.values():
+            for iface in node.interfaces:
+                if iface.ip == address or iface.broadcast == address:
+                    return True
 
     async def try_broadcast_addresses(self):
         host = self.network.get_host()
 
         for iface in host.interfaces:
-            if iface.broadcast:
+            if not self.is_known_node(iface.broadcast):
                 await self.server.send_packet(iface.broadcast, Message('hello', host))
                 await asyncio.sleep(.5)

@@ -10,7 +10,7 @@ class Map:
         self.config = config
         self.vpn = vpn
         self.host: Node = None
-        self.nodes = {}
+        self.nodes: dict[str, Node] = {}
         self.is_joined = False
         pass
 

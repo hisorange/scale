@@ -1,5 +1,6 @@
 {
   "cSpell.ignoreWords": [
+    "af",
     "aioudp",
     "asyncio",
     "crypter",
@@ -7,6 +8,7 @@
     "dkms",
     "iface",
     "ifaddresses",
+    "inet",
     "netifaces",
     "nkey",
     "optionxform",

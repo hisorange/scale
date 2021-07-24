@@ -7,3 +7,4 @@ python-coveralls
 asyncio
 aio-udp-server
 pycryptodome
+msgpack

@@ -15,8 +15,8 @@ class DiscoveryUDPServer:
         self.create_network_key()
 
         # Subscribe for incoming udp packet event
-        self.server.subscribe(self.on_datagram_received)
-        asyncio.ensure_future(self.send_discovery_packet(), loop=self.loop)
+        self.server.subscribe(self.handle_incoming)
+        asyncio.ensure_future(self.send_discovery_packets(), loop=self.loop)
 
     def create_network_key(self):
         self.logger.info('Network key is calculated')
@@ -26,7 +26,7 @@ class DiscoveryUDPServer:
 
 
     # Handle messages
-    async def on_datagram_received(self, data, addr):
+    async def handle_incoming(self, data, addr):
         self.logger.info(f'Received from [{data}]: {addr}')
 
         data_str = str(data).replace('\n', '')
@@ -37,12 +37,12 @@ class DiscoveryUDPServer:
         else:
             self.logger.info(f'Valid key: [{data_str}]')
 
-    async def send_discovery_packet(self):
+    async def send_discovery_packets(self):
         while True:
             for entry in self.config.entryPoints:
-                await self.do_send(entry)
+                await self.send_packet(entry)
 
-    async def do_send(self, ip):
+    async def send_packet(self, ip):
         self.logger.debug('Sending discovery packet to [{}]'.format(ip))
         self.server.send(self.nkey, (ip, self.config.network['discoveryPort']))
 

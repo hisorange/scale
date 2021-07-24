@@ -1,5 +1,5 @@
 import asyncio
-from socket import socket
+import socket
 
 from aioudp import UDPServer
 

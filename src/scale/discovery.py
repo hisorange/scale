@@ -22,7 +22,7 @@ class Discovery:
         asyncio.ensure_future(self.run_discovery(), loop=self.loop)
 
     async def start_udp_server(self):
-        udp_srv = UDPServer(download_speed=100, upload_speed=100)
+        udp_srv = UDPServer()
         udp_srv.run("0.0.0.0", int(
             self.config.network['discoveryPort']), loop=self.loop)
 

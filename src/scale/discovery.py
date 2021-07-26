@@ -10,6 +10,8 @@ from scale.udpserver import DiscoveryUDPServer
 
 
 # TODO: use protobuf to serialize the message
+# TODO: use zeromq to send the messages
+# TODO: keep the UDP server running until for discovery
 class Discovery:
     def __init__(self, config, loop: asyncio.AbstractEventLoop, network: Map):
         self.config = config

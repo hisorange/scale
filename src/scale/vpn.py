@@ -3,6 +3,8 @@ import random
 import string
 from configparser import ConfigParser
 
+import netifaces
+
 from scale.logger import create_logger
 from scale.network.node import Node
 
@@ -14,6 +16,10 @@ class VPNManager:
         self.nodes: list[Node] = []
         self.iface = self.config.network['interface']
         pass
+
+    # Read the interfaces from the host
+    def get_interfaces(self):
+        return netifaces.interfaces()
 
     def bootstrap(self):
         # Check if the VPN is running
@@ -31,13 +37,7 @@ class VPNManager:
         self.logger.info('Bootstrapped VPN...')
 
     def check_if_wg_running(self):
-        result = os.system('ip a | grep {}'.format(
-            self.iface))
-
-        if (result == 0):
-            return True
-        else:
-            return False
+        return self.get_interfaces().__contains__(self.iface)
 
     def generate_wg_config(self) -> None:
         config_path = os.path.join(

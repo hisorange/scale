@@ -1,5 +1,7 @@
 import asyncio
 
+from pymitter import EventEmitter
+
 from scale.config import Config
 from scale.dependencymanager import DependencyManager
 from scale.discovery import Discovery
@@ -10,6 +12,8 @@ from scale.vpn import VPNManager
 async def start_scale(loop: asyncio.AbstractEventLoop):
     config = Config()
     config.load()
+
+    event_bus = EventEmitter()
 
     DependencyManager()
 

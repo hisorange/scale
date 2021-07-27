@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package scale;
+
+message Interface {
+  required string name = 1;
+  required string address = 2;
+  required string mask = 3;
+  required string broadcast = 4;
+  required string gateway = 4;
+  required string mac = 4;
+}
+
+message Join {
+  required string hostname = 1;
+  required int32 port = 2;
+  repeated Interface interfaces = 3;
+}
+
+message Leave {
+  required string hostname = 1;
+  required int32 port = 2;
+}
+
+message NetworkMap {
+  message Node {
+    required string hostname = 1;
+    required int32 port = 2;
+    required boolean neighbor = 3;
+
+    repeated Interface interfaces = 4;
+  }
+
+  repeated Node nodes = 1;
+}

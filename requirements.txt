@@ -9,3 +9,5 @@ aio-udp-server
 pycryptodome
 msgpack
 coloredlogs
+pyzmq
+pymitter
